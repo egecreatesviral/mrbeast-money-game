@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="tr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>MrBeast'in Parasını Harca! 💰</title>
+    <style>
+        :root {
+            --bg-color: #0f172a;
+            --card-bg: #1e293b;
+            --mrbeast-blue: #00d2ff;
+            --mrbeast-pink: #ff007f;
+            --money-green: #00ff88;
+            --text-main: #f8fafc;
+            --text-muted: #94a3b8;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Cabinet Grotesk', 'Segoe UI', sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-main);
+            padding: 20px 10px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            min-height: 100vh;
+        }
+
+        /* Üst Sabit Panel (Header) */
+        .header-panel {
+            background: linear-gradient(135deg, var(--card-bg) 0%, #111827 100%);
+            width: 100%;
+            max-width: 600px;
+            border-radius: 24px;
+            padding: 25px;
+            text-align: center;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.3);
+            border: 2px solid rgba(255, 255, 255, 0.05);
+            position: sticky;
+            top: 10px;
+            z-index: 100;
+            backdrop-filter: blur(10px);
+            margin-bottom: 25px;
+        }
+
+        .avatar-container {
+            width: 85px;
+            height: 85px;
+            background: linear-gradient(45deg, var(--mrbeast-blue), var(--mrbeast-pink));
+            border-radius: 50%;
+            margin: 0 auto 12px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 42px;
+            box-shadow: 0 0 20px rgba(0, 210, 255, 0.4);
+        }
+
+        h1 {
+            font-size: 22px;
+            font-weight: 800;
+            letter-spacing: -0.5px;
+            background: linear-gradient(to right, #fff, var(--text-muted));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+
+        /* CANLI PARA SAYAÇI */
+        .money-counter {
+            font-size: 36px;
+            font-weight: 900;
+            color: var(--money-green);
+            margin: 15px 0 5px;
+            text-shadow: 0 0 15px rgba(0, 255, 136, 0.3);
+            font-variant-numeric: tabular-nums;
+            transition: all 0.1s ease;
+        }
+
+        .receipt-summary {
+            font-size: 13px;
+            color: var(--mrbeast-blue);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* ÜRÜN LİSTESİ */
+        .products-grid {
+            width: 100%;
+            max-width: 600px;
+            display: grid;
+            grid-template-columns: 1fr;
+            gap: 15px;
+            margin-bottom: 30px;
+        }
+
+        .product-card {
+            background-color: var(--card-bg);
+            border-radius: 20px;
+            padding: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            border: 1px solid rgba(255, 255, 255, 0.03);
+            transition: transform 0.2s, border-color 0.2s;
+        }
+
+        .product-card:hover {
+            border-color: rgba(0, 210, 255, 0.2);
+        }
+
+        .product-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .product-emoji {
+            font-size: 35px;
+            background: rgba(255,255,255,0.03);
+            padding: 10px;
+            border-radius: 16px;
+            width: 60px;
+            height: 60px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .product-details {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .product-name {
+            font-size: 16px;
+            font-weight: 700;
+            color: var(--text-main);
+            margin-bottom: 2px;
+        }
+
+        .product-price {
+            font-size: 14px;
+            font-weight: 600;
+            color: var(--money-green);
+        }
+
+        /* AKSİYON BUTONLARI */
+        .action-area {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .btn {
+            border: none;
+            padding: 10px 16px;
+            border-radius: 12px;
+            font-size: 14px;
+            font-weight: 700;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .btn-sell {
+            background-color: #334155;
+            color: #cbd5e1;
+        }
+
+        .btn-sell:disabled {
+            opacity: 0.2;
+            cursor: not-allowed;
+        }
+
+        .btn-buy {
+            background: linear-gradient(135deg, var(--mrbeast-blue), #00a8ff);
+            color: #000;
+        }
+
+        .btn-buy:disabled {
+            background: #1e293b;
+            color: var(--text-muted);
+            border: 1px solid rgba(255,255,255,0.05);
+            cursor: not-allowed;
+        }
+
+        .item-count {
+            font-size: 16px;
+            font-weight: 800;
+            min-width: 24px;
+            text-align: center;
+            color: var(--mrbeast-pink);
+        }
+
+        /* ALT PAYLAŞIM ALANI */
+        .footer-share {
+            width: 100%;
+            max-width: 600px;
+            background: rgba(255, 0, 127, 0.05);
+            border: 1px dashed var(--mrbeast-pink);
+            border-radius: 20px;
+            padding: 20px;
+            text-align: center;
+            margin-top: 10px;
+        }
+
+        .footer-share p {
+            font-size: 14px;
+            color: #f43f5e;
+            font-weight: 600;
+            margin-bottom: 5px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Üst Sabit Panel -->
+    <div class="header-panel">
+        <div class="avatar-container">🐯</div>
+        <h1>MrBeast'in Banka Hesabını Sıfırla!</h1>
+        <div class="money-counter" id="moneyDisplay">$54,000,000,000</div>
+        <div class="receipt-summary" id="spentDisplay">Harcanan: $0 (0 Ürün)</div>
+    </div>
+
+    <!-- Ürün Listesi -->
+    <div class="products-grid" id="productsContainer">
+        <!-- JavaScript burayı otomatik dolduracak -->
+    </div>
+
+    <!-- Viral Paylaşım Alanı -->
+    <div class="footer-share">
+        <p>📸 Sepetinin Ekran Görüntüsünü Al!</p>
+        <p style="color: var(--text-muted); font-size: 12px; font-weight: 400;">"MrBeast'in parasını bitirmeyi denedim" diyerek Reels/TikTok'ta paylaş!</p>
+    </div>
+
+    <script>
+        // Toplam Bütçe: 54 Milyar Dolar (Tahmini MrBeast Değeri)
+        let totalBudget = 54000000000;
+        let initialBudget = 54000000000;
+        let totalSpent = 0;
+        let totalItemsCount = 0;
+
+        // Detaylı ve Viral Ürün Listesi
+        const products = [
+            { id: 1, name: "Feastables Çikolata", price: 3, emoji: "🍫", count: 0 },
+            { id: 2, name: "Zinger Burger Menü", price: 8, emoji: "🍔", count: 0 },
+            { id: 3, name: "Karaköy Güllüoğlu Baklava (1 KG)", price: 30, emoji: "🥮", count: 0 },
+            { id: 4, name: "iPhone 17 Pro Max", price: 1600, emoji: "📱", count: 0 },
+            { id: 5, name: "Modifiyeli Tofaş Şahin", price: 6000, emoji: "🚗", count: 0 },
+            { id: 6, name: "Kurşun Geçirmez Lamborghini", price: 350000, emoji: "🏎️", count: 0 },
+            { id: 7, name: "MrBeast Videosu İçin Özel Ada", price: 15000000, emoji: "🏝️", count: 0 },
+            { id: 8, name: "Özel Yolcu Jeti (Airbus)", price: 95000000, emoji: "🛩️", count: 0 },
+            { id: 9, name: "SpaceX Roketi", price: 180000000, emoji: "🚀", count: 0 },
+            { id: 10, name: "Real Madrid Futbol Kulübü", price: 6000000000, emoji: "👑", count: 0 }
+        ];
+
+        const productsContainer = document.getElementById('productsContainer');
+        const moneyDisplay = document.getElementById('moneyDisplay');
+        const spentDisplay = document.getElementById('spentDisplay');
+
+        // Sayıları Para Formatına Çeviren Fonksiyon
+        function formatMoney(num) {
+            return '$' + num.toLocaleString('en-US');
+        }
+
+        // Arayüzü Güncelleyen Fonksiyon
+        function updateUI() {
+            moneyDisplay.innerText = formatMoney(totalBudget);
+            spentDisplay.innerText = `Harcanan: ${formatMoney(totalSpent)} (${totalItemsCount} Ürün)`;
+            
+            // Butonların durumlarını kontrol et
+            products.forEach(p => {
+                const buyBtn = document.getElementById(`buy-${p.id}`);
+                const sellBtn = document.getElementById(`sell-${p.id}`);
+                const countSpan = document.getElementById(`count-${p.id}`);
+                
+                countSpan.innerText = p.count;
+                sellBtn.disabled = p.count <= 0;
+                buyBtn.disabled = totalBudget < p.price;
+            });
+        }
+
+        // Ürünleri Ekrana Basma
+        products.forEach(product => {
+            const card = document.createElement('div');
+            card.className = 'product-card';
+            card.innerHTML = `
+                <div class="product-info">
+                    <div class="product-emoji">${product.emoji}</div>
+                    <div class="product-details">
+                        <span class="product-name">${product.name}</span>
+                        <span class="product-price">${formatMoney(product.price)}</span>
+                    </div>
+                </div>
+                <div class="action-area">
+                    <button class="btn btn-sell" id="sell-${product.id}" onclick="sellItem(${product.id})">İade</button>
+                    <span class="item-count" id="count-${product.id}">0</span>
+                    <button class="btn btn-buy" id="buy-${product.id}" onclick="buyItem(${product.id})">Satın Al</button>
+                </div>
+            `;
+            productsContainer.appendChild(card);
+        });
+
+        // Satın Alma Fonksiyonu
+        function buyItem(id) {
+            const product = products.find(p => p.id === id);
+            if (totalBudget >= product.price) {
+                product.count++;
+                totalBudget -= product.price;
+                totalSpent += product.price;
+                totalItemsCount++;
+                updateUI();
+            }
+        }
+
+        // İade Etme Fonksiyonu
+        function sellItem(id) {
+            const product = products.find(p => p.id === id);
+            if (product.count > 0) {
+                product.count--;
+                totalBudget += product.price;
+                totalSpent -= product.price;
+                totalItemsCount--;
+                updateUI();
+            }
+        }
+
+        // İlk Açılışta UI Güncelle
+        updateUI();
+    </script>
+</body>
+</html>
